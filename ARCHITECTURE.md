@@ -1,9 +1,9 @@
 # LessonAtlas: Technical Architecture
 
-Version: 1.0\
+Version: 1.1\
 Date: 2026-10-05\
 Status: Implementation architecture baseline\
-Companions: REQUIREMENTS.md 1.1 and DESIGN.md 1.0
+Companions: REQUIREMENTS.md 1.2 and DESIGN.md 1.0
 
 ## 1. Purpose, authority, and assumptions
 
@@ -56,7 +56,7 @@ The browser loads static code from a CDN and calls a same-origin `/api/v1` endpo
 | Client state | Redux Toolkit, RTK Query | Global UI/session preferences, API caching and invalidation; form-local state stays in components where appropriate. No student content in persisted Redux state. |
 | Routing / forms | React Router; React Hook Form plus schema validation | Route-level loading/error states, typed forms, visible validation. Exact library versions are pinned during implementation. |
 | Localization | ICU message catalogs via a React i18n library; native `Intl` | Versioned messages, pluralization, locale formatting, accessible language metadata. |
-| API | Node.js LTS, TypeScript, Fastify, REST over HTTPS | Domain modules, authentication, validation, authorization, and OpenAPI contracts. Pin supported releases and patch regularly. |
+| API | Node.js supported LTS, TypeScript, Fastify, REST over HTTPS | Domain modules, authentication, validation, authorization, and OpenAPI contracts. Use Node.js 24 LTS until Node.js 26 reaches LTS and passes compatibility tests; pin exact patched releases. |
 | Contracts | OpenAPI 3.1 and shared generated TypeScript clients; JSON Schema or Zod validation | Published request/response schemas, typed clients, runtime validation, and compatibility checks. |
 | Primary store | Managed PostgreSQL | Transactions, constraints, records, revisions, outbox, and durable notification status. |
 | Cache / queue support | Managed Redis | Short-lived authorized query cache, rate limits, and queue coordination. No unique authoritative student data. |
@@ -107,7 +107,7 @@ Require `Idempotency-Key` for imports, acceptance, exports, and other retried co
 
 ## 6. Identity, authorization, and session design
 
-Use an approved OIDC identity provider for teacher authentication. The provider choice remains open; production selection must meet the applicable institution and regional requirements. The API uses a server-managed session in an opaque `HttpOnly`, `Secure`, `SameSite` cookie. Rotate session identifiers after authentication, enforce idle and absolute limits, and provide server-side revocation for sign-out and incident response (ACCESS-01, ACCESS-03). Use CSRF protection for cookie-authenticated mutations, strict CORS, origin checks, and a restrictive content security policy. Do not expose bearer tokens to browser JavaScript.
+Use an approved OIDC identity provider for teacher authentication, with an explicitly configured school/organization connection when required. Every teacher event must establish passkey-with-user-verification or stronger phishing-resistant assurance, and the application must verify that assurance from the provider before creating a session. The provider choice remains open; production selection must meet the applicable institution and regional requirements. The API uses a server-managed session in an opaque `HttpOnly`, `Secure`, `SameSite` cookie. Rotate session identifiers after authentication, enforce idle and absolute limits, and provide server-side revocation for sign-out and incident response (ACCESS-01, ACCESS-03–05). Use CSRF protection for cookie-authenticated mutations, strict CORS, origin checks, and a restrictive content security policy. Do not expose bearer tokens to browser JavaScript.
 
 Each teacher initially owns one or more private workspaces as explicitly assigned. A policy check resolves `(teacher_id, workspace_id, action, resource_id)` for every request and background job. Queries include `workspace_id`; composite foreign keys prevent cross-workspace links. PostgreSQL row-level security can provide defense in depth, but application policy remains required, and connection pooling must set and reset workspace context safely. Administrative/support access, if ever introduced, needs an explicit product requirement, separate role design, approval, audit, and customer disclosure. No implicit superuser path appears in ordinary APIs.
 
@@ -182,7 +182,7 @@ Deployment uses infrastructure as code, separate environments, managed secrets, 
 | Target jurisdictions, student ages, and customer types | Legal applicability matrix, onboarding restrictions, and region availability. |
 | Institution authority and contracts | Data stewardship, permitted processing, roles, subprocessors, privacy notices, and support access rules. |
 | Home regions and hosting provider | Residency map, backup locations, cross-border transfer controls, and regional failure policy. |
-| Identity provider | OIDC integration, account recovery, MFA policy, institutional federation needs, session limits. |
+| Identity provider | OIDC integration, verified passkey-or-stronger teacher assurance, account recovery, institutional federation, and session limits. |
 | AI provider and model | Approved terms, no-training setting, retention/deletion, allowed fields, location, evaluation baseline. |
 | Retention and recovery | Record lifetimes, export expiry, backup window, deletion SLA, RPO/RTO. |
 | Chinese locale scope | Confirm `zh-Hans` alone or both `zh-Hans` and `zh-Hant`; commission education-domain review. |
@@ -199,3 +199,4 @@ External references are architecture inputs, not a compliance certification: [WC
 | Version | Date | Change |
 | --- | --- | --- |
 | 1.0 | 2026-10-05 | Initial technical architecture aligned to REQUIREMENTS.md 1.1, DESIGN.md 1.0, and product-owner stack, accessibility, localization, global-scale, and privacy direction. |
+| 1.1 | 2026-10-05 | Added mandatory teacher authenticator assurance and school OIDC connection; clarified Node.js LTS transition and aligned to REQUIREMENTS.md 1.2. |
