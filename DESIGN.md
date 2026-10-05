@@ -3,7 +3,7 @@
 Version: 1.0  
 Date: 2026-10-05  
 Status: Implementation design baseline  
-Companion: REQUIREMENTS.md, version 1.0
+Companion: REQUIREMENTS.md, version 1.1
 
 ## 1. Purpose and precedence
 

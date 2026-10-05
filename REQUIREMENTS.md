@@ -1,6 +1,6 @@
 # Teacher Planning Assistant: Requirements
 
-Version: 1.0  
+Version: 1.1\
 Date: 2026-10-05  
 Status: Initial implementation baseline  
 Product owner: Jim Manico
@@ -26,7 +26,7 @@ This document is the source of truth for product scope, behavior, and acceptance
 
 | ID | Proposed default |
 | --- | --- |
-| A-01 | A responsive, English-language web application for teachers, usable on desktop and tablet. |
+| A-01 | A responsive web application for teachers, usable on desktop and tablet, with English, Spanish, and Chinese interface localization. Teacher-entered content retains its original language. |
 | A-02 | Each teacher initially has a private workspace containing multiple classes, subjects, and academic terms. Shared teaching and school administration are deferred. |
 | A-03 | Students and parents are contact records, without login accounts or direct access in the initial release. |
 | A-04 | Teachers enter or import their own educational standards. No particular country, grade range, curriculum, or standards catalog is assumed. |
@@ -277,6 +277,7 @@ The following are proposed initial engineering targets; revise explicitly if dep
 | QUALITY-03 | Keep ordinary reads/saves responsive. | At the reference scale and 25 concurrent active teachers, p95 server response time is under 2 seconds for ordinary paginated reads/saves, excluding AI, bulk imports, and exports; test environment is documented. |
 | QUALITY-04 | Run long operations with visible progress and recoverable status. | AI requests show a processing state promptly; a configurable timeout produces a retryable failure without losing edits. |
 | QUALITY-05 | Preserve data across refresh, logout/login, and supported deployment migrations. | End-to-end persistence and migration checks retain record relationships, versions, and approval history. |
+| QUALITY-06 | Support English, Spanish, and Chinese throughout teacher-facing workflows. | Navigation, forms, validation, status messages, notifications, exports, print views, and accessibility labels are localized; locale-specific dates, numbers, and times are formatted correctly; a teacher can switch language without changing stored academic values. |
 
 ## 12. Delivery sequence and release acceptance
 
@@ -332,3 +333,4 @@ These do not block a synthetic-data prototype. Record each decision here before 
 | Version | Date | Change |
 | --- | --- | --- |
 | 1.0 | 2026-10-05 | Initial source of truth derived from the project idea and categorized feature list; includes proposed build defaults, acceptance criteria, and production decisions. |
+| 1.1 | 2026-10-05 | Expanded proposed language scope to English, Spanish, and Chinese and added localization acceptance criteria per product-owner architecture direction. |
