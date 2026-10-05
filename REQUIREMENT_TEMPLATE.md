@@ -1,10 +1,6 @@
 # Requirement Template - Web, Mobile & API Applications
 
-Use one copy of this template for each atomic requirement.
-
-Replace bracketed placeholders when authoring a requirement. Use `N/A` only when a field has been evaluated and is not applicable. Use `TO BE DECIDED` when the answer is unresolved.
-
-Uppercase normative terms use BCP 14 semantics as defined by RFC 2119 and RFC 8174. Prefer `MUST`, `MUST NOT`, `SHOULD`, `SHOULD NOT`, and `MAY`. Split compound behavior into separate requirements.
+Authoring rules: [CLAUDE.md AG-02](CLAUDE.md#ag-02--issue-authoring). This file defines the issue fields only.
 
 ## Metadata
 
@@ -21,7 +17,7 @@ Uppercase normative terms use BCP 14 semantics as defined by RFC 2119 and RFC 81
 
 ## Requirement
 
-- **Statement**: [One atomic, unambiguous, and independently testable statement describing what the system MUST, MUST NOT, SHOULD, SHOULD NOT, or MAY do.]
+- **Statement**: [Link to the owning file and canonical requirement ID.]
 - **Rationale**: [Business, user, regulatory, architectural, privacy, or threat-driven reason for the requirement. Do not introduce additional required behavior here.]
 - **Assumptions**: [Assumptions on which the requirement depends, or `None`.]
 - **Out of Scope**: [Behavior that is explicitly excluded from this requirement, or `None`.]
@@ -54,10 +50,6 @@ Uppercase normative terms use BCP 14 semantics as defined by RFC 2119 and RFC 81
 
 ## Standards Alignment
 
-Only include mappings verified against the cited version of the standard. Do not guess control identifiers.
-
-Use `N/A` when a standard has been evaluated and does not apply. Use `TO BE DECIDED` when applicability or mapping has not yet been assessed.
-
 - **OWASP ASVS 5.0.0**: [Versioned requirement ID, e.g., `v5.0.0-1.2.5`, or `N/A`]
 - **OWASP AISVS 1.0**: [Requirement ID when an AI-enabled component is involved, or `N/A`]
 - **NIST SP 800-53 Rev. 5**: [Control or control-enhancement ID and the catalog release used, or `N/A`]
@@ -68,16 +60,6 @@ Use `N/A` when a standard has been evaluated and does not apply. Use `TO BE DECI
 
 ## Acceptance Criteria
 
-Each acceptance criterion MUST:
-
-- describe one observable pass/fail outcome
-- be independently testable
-- remain within the behavior defined by the requirement
-- identify relevant preconditions, action, and expected result
-- avoid introducing new product behavior
-
-Use Given/When/Then or an equally explicit pass/fail form.
-
 1. **AC-01 — Expected behavior**: Given [valid preconditions], when [actor or system action], then [observable expected result].
 2. **AC-02 — Boundary or failure behavior**: Given [boundary condition, invalid input, unauthorized action, or dependency failure], when [action occurs], then [safe and observable result with no unauthorized state change or sensitive side effect].
 3. **AC-03 — Prohibited behavior**: Given [relevant preconditions], when [action occurs], then [behavior or outcome that MUST NOT occur].
@@ -87,10 +69,10 @@ Use Given/When/Then or an equally explicit pass/fail form.
 
 - **On Invalid Input**: [Protocol-appropriate rejection behavior, error classification, and confirmation that no protected state change or sensitive side effect occurs]
 - **On Authentication Failure**: [Expected response and disclosure behavior, or `N/A`]
-- **On Authorization Failure**: [Deny the operation; define response behavior and whether resource existence may be disclosed, or `N/A`]
-- **On Security-Decision Failure**: [Deny by default unless an explicit, documented risk decision permits another behavior]
+- **On Authorization Failure**: [Owning SECURITY.md rule ID and issue-specific verification, or `N/A`]
+- **On Security-Decision Failure**: [Owning SECURITY.md rule ID and issue-specific verification]
 - **On External Dependency Failure**: [Timeout, retry, circuit-breaker, idempotency, or degradation behavior, or `N/A`]
-- **On System Error**: [Rollback, consistency, recovery, and safe error-response behavior; internal state and sensitive data MUST NOT be disclosed]
+- **On System Error**: [Owning requirement/rule IDs and issue-specific failure tests]
 - **Logging / Audit**: [Events and fields to record, correlation mechanism, redaction requirements, and prohibited data]
 - **Alerting**: [Alert condition, threshold, severity, and destination, or `N/A`]
 
@@ -101,7 +83,7 @@ Use Given/When/Then or an equally explicit pass/fail form.
 - **Security Tests**: [Applicable negative tests, abuse cases, authorization tests, fuzzing classes, SAST rules, DAST targets, or manual review items]
 - **Compliance Tests / Evidence**: [Automated or manual evidence required for an applicable obligation, or `N/A`]
 - **Acceptance-Criteria Traceability**: [Test identifier or test suite covering each `AC-*` criterion]
-- **Coverage Target**: [Project-defined target. All security-critical decisions and error paths MUST include positive and negative test coverage.]
+- **Coverage Target**: [Applicable owning-file verification IDs; security coverage is owned by SECURITY.md SEC-VERIFY-01.]
 - **Required Test Environment**: [Fixtures, identities, roles, dependency simulators, configuration, or test data required]
 
 ## Dependencies
@@ -112,16 +94,6 @@ Use Given/When/Then or an equally explicit pass/fail form.
 - **External Dependencies**: [Third-party services, identity providers, APIs, cryptographic services, hardware services, or `None`]
 - **Dependency Assumptions**: [Security, availability, data-integrity, or contractual assumptions made about external dependencies]
 - **Failure Impact**: [Effect of an unavailable, compromised, slow, or malformed dependency response]
-
-A **Child Requirements** field MUST list every child, in build order, one child per line in the form:
-
-```
-  - [ ] <child issue URL> — <child Title>
-```
-
-The label MUST reproduce the child's Metadata **Title** verbatim; an abbreviated issue title MUST NOT be substituted for it. Every child MUST appear exactly once, and MUST NOT be listed under any other parent. A decomposition requirement MUST NOT reach `Verified` until every child has reached `Verified`.
-
-Children MUST NOT be restated under **Downstream Requirements**, which records requirements that depend on this one — not requirements that compose it.
 
 ## Implementation Notes
 
