@@ -1,6 +1,6 @@
 # Teacher Planning Assistant: Requirements
 
-Version: 1.1\
+Version: 1.2\
 Date: 2026-10-05  
 Status: Initial implementation baseline  
 Product owner: Jim Manico
@@ -57,6 +57,8 @@ This document is the source of truth for product scope, behavior, and acceptance
 | ACCESS-01 | Require authenticated access to all workspace data. | An unauthenticated request cannot retrieve, modify, export, or search student or lesson data. |
 | ACCESS-02 | Enforce workspace ownership on the server for every record and operation. | A teacher cannot access another workspace through altered IDs, search, exports, attachments, history, or AI requests. |
 | ACCESS-03 | Support sign-out and revocation of active sessions. | A revoked session cannot perform subsequent protected operations. |
+| ACCESS-04 | Require every teacher authentication event to use a passkey with user verification or a stronger phishing-resistant authenticator, including federated sign-in. | Password-only, password plus OTP, email-link, and federation events without verified authenticator assurance cannot create a teacher session; the application validates the approved provider's assurance evidence. |
+| ACCESS-05 | Allow a school or organization to connect an approved OIDC identity provider for teacher sign-in. | The connection is explicitly configured and bound to the organization; issuer, client, signature, audience, state, nonce, and account mapping are validated before a session is created. |
 
 ## 5. Functional requirements
 
@@ -334,3 +336,4 @@ These do not block a synthetic-data prototype. Record each decision here before 
 | --- | --- | --- |
 | 1.0 | 2026-10-05 | Initial source of truth derived from the project idea and categorized feature list; includes proposed build defaults, acceptance criteria, and production decisions. |
 | 1.1 | 2026-10-05 | Expanded proposed language scope to English, Spanish, and Chinese and added localization acceptance criteria per product-owner architecture direction. |
+| 1.2 | 2026-10-05 | Added mandatory passkey-or-stronger teacher authentication and approved school/organization OIDC federation. Student login remains outside the initial release. |
